@@ -126,12 +126,13 @@ namespace Test.CompileBatchOfProjectsDelphi {
 
             var compressExecutable = Substitute.For<ICompressExecutable>();
 
-            new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(Path.GetFullPath("Resources\\Project3\\Project1.dpr"))
+            var fileDprProject = Path.GetFullPath("Resources\\Project3\\Project1.dpr");
+            new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(fileDprProject)
                                                            .BinPath("Resources\\Project3\\bin\\")
                                                            .Build(compressExecutable);
 
             compressExecutable.Received(1)
-                              .Do(fileExecutable);
+                              .Do(Path.GetDirectoryName(fileDprProject), fileExecutable);
         }
     }
 }

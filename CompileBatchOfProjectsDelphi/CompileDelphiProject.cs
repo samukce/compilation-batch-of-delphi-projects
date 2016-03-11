@@ -50,6 +50,8 @@ namespace CompileBatchOfProjectsDelphi {
             var fileNameProject = Path.GetFileName(fileDprProject);
             var argumentsProcessCompile = $"\"{fileNameProject}\" -u\"{searchPath}\" -N\"{tempDirectory}\" -Q";
 
+            var workingDirectory = Path.GetDirectoryName(fileDprProject);
+
             var process = new Process {
                 StartInfo = {
                     FileName = delphiPath,
@@ -59,7 +61,7 @@ namespace CompileBatchOfProjectsDelphi {
                     RedirectStandardError = true,
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
-                    WorkingDirectory = Path.GetDirectoryName(fileDprProject)
+                    WorkingDirectory = workingDirectory
                 }
             };
 
@@ -72,7 +74,7 @@ namespace CompileBatchOfProjectsDelphi {
 
             process.WaitForExit();
 
-            compressExecutable?.Do(Path.Combine(binPath, Path.ChangeExtension(fileNameProject, "exe")));
+            compressExecutable?.Do(workingDirectory, Path.Combine(binPath, Path.ChangeExtension(fileNameProject, "exe")));
         }
 
         private void ProcessConsoleLog(object sender, DataReceivedEventArgs e) {
