@@ -25,7 +25,7 @@ namespace CompileBatchOfProjectsDelphi {
                                                         .BinPath(binPath)
                                                         .Build(new UpxCompress());
                 } catch (Exception exception) {
-                    Console.WriteLine("Error>>>>> " + exception.Message);
+                    Console.WriteLine("Error >>>>> " + exception.Message);
                 }
             }
         }

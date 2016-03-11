@@ -5,14 +5,17 @@ using System.IO;
 namespace CompileBatchOfProjectsDelphi {
     public class CompileDelphiProject : ICompileDelphiProject {
         private readonly string delphiPath;
+        private readonly ProcessExecute processExecute;
 
         private string fileDprProject;
         private string searchPath;
         private string tempDirectory;
         private string binPath;
 
+
         public CompileDelphiProject(string delphiPath) {
             this.delphiPath = delphiPath;
+            processExecute = new ProcessExecute();
         }
 
         public ICompileDelphiProject ProjectFile(string fileName) {
@@ -52,33 +55,9 @@ namespace CompileBatchOfProjectsDelphi {
 
             var workingDirectory = Path.GetDirectoryName(fileDprProject);
 
-            var process = new Process {
-                StartInfo = {
-                    FileName = delphiPath,
-                    Arguments = argumentsProcessCompile,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    CreateNoWindow = true,
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    WorkingDirectory = workingDirectory
-                }
-            };
-
-            process.OutputDataReceived += ProcessConsoleLog;
-            process.ErrorDataReceived += ProcessConsoleLog;
-
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-
-            process.WaitForExit();
+            processExecute.ExecuteProcess(delphiPath, argumentsProcessCompile, workingDirectory);
 
             compressExecutable?.Do(workingDirectory, Path.Combine(binPath, Path.ChangeExtension(fileNameProject, "exe")));
-        }
-
-        private void ProcessConsoleLog(object sender, DataReceivedEventArgs e) {
-            Console.WriteLine(e.Data);
         }
     }
 }
