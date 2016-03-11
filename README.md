@@ -1,0 +1,1 @@
+# compilation-batch-of-delphi-projects
