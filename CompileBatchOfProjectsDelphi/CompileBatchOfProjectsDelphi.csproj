@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CompileDelphiProject.cs" />
     <Compile Include="ICompileDelphiProject.cs" />
+    <Compile Include="ICompressExecutable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -9,6 +9,7 @@ namespace CompileBatchOfProjectsDelphi {
         private string fileDprProject;
         private string searchPath;
         private string tempDirectory;
+        private string binPath;
 
         public CompileDelphiProject(string delphiPath) {
             this.delphiPath = delphiPath;
@@ -27,6 +28,14 @@ namespace CompileBatchOfProjectsDelphi {
             return this;
         }
 
+        public ICompileDelphiProject BinPath(string path) {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            binPath = path;
+            return this;
+        }
+
         public ICompileDelphiProject TempDirectory(string directory) {
             if (Directory.Exists(directory))
                 Directory.Delete(directory, true);
@@ -37,8 +46,9 @@ namespace CompileBatchOfProjectsDelphi {
             return this;
         }
 
-        public void Build() {
-            var argumentsProcessCompile = $"\"{Path.GetFileName(fileDprProject)}\" -u\"{searchPath}\" -N\"{tempDirectory}\" -Q";
+        public void Build(ICompressExecutable compressExecutable = null) {
+            var fileNameProject = Path.GetFileName(fileDprProject);
+            var argumentsProcessCompile = $"\"{fileNameProject}\" -u\"{searchPath}\" -N\"{tempDirectory}\" -Q";
 
             var process = new Process {
                 StartInfo = {
@@ -61,6 +71,8 @@ namespace CompileBatchOfProjectsDelphi {
             process.BeginErrorReadLine();
 
             process.WaitForExit();
+
+            compressExecutable?.Do(Path.Combine(binPath, Path.ChangeExtension(fileNameProject, "exe")));
         }
 
         private void ProcessConsoleLog(object sender, DataReceivedEventArgs e) {

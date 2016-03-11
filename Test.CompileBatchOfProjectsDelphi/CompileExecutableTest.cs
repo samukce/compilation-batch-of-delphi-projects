@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using CompileBatchOfProjectsDelphi;
+using NSubstitute;
 using NUnit.Framework;
 using static System.Configuration.ConfigurationManager;
 
@@ -89,6 +90,48 @@ namespace Test.CompileBatchOfProjectsDelphi {
             var dateAfter = Directory.GetCreationTime(tempfolder);
 
             Assert.That(dateAfter, Is.GreaterThan(dateBefore));
+        }
+
+        [Test]
+        public void ShouldBuildExecutableFileToOutpurPathInProject() {
+            const string fileExecutable = "Resources\\Project3\\bin\\Project1.exe";
+
+            if (File.Exists(fileExecutable))
+                File.Delete(fileExecutable);
+
+            new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(Path.GetFullPath("Resources\\Project3\\Project1.dpr"))
+                                                           .Build();
+            Assert.That(File.Exists(fileExecutable));
+        }
+
+        [Test]
+        public void ShouldCreateBinFolderIfNotExist() {
+            const string folder = "NEW_FODLER_BIN";
+
+            if (Directory.Exists(folder))
+                Directory.Delete(folder, true);
+
+            new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(Path.GetFullPath("Resources\\Project3\\Project1.dpr"))
+                                                           .BinPath(folder);
+
+            Assert.That(Directory.Exists(folder));
+        }
+
+        [Test]
+        public void ShouldCallCompress() {
+            const string fileExecutable = "Resources\\Project3\\bin\\Project1.exe";
+
+            if (File.Exists(fileExecutable))
+                File.Delete(fileExecutable);
+
+            var compressExecutable = Substitute.For<ICompressExecutable>();
+
+            new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(Path.GetFullPath("Resources\\Project3\\Project1.dpr"))
+                                                           .BinPath("Resources\\Project3\\bin\\")
+                                                           .Build(compressExecutable);
+
+            compressExecutable.Received(1)
+                              .Do(fileExecutable);
         }
     }
 }
