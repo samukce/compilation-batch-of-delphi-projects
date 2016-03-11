@@ -112,9 +112,10 @@ namespace Test.CompileBatchOfProjectsDelphi {
                 Directory.Delete(folder, true);
 
             new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(Path.GetFullPath("Resources\\Project3\\Project1.dpr"))
-                                                           .BinPath(folder);
+                                                           .BinPath(folder)
+                                                           .Build();
 
-            Assert.That(Directory.Exists(folder));
+            Assert.That(Directory.Exists("Resources\\Project3\\NEW_FODLER_BIN"));
         }
 
         [Test]
@@ -127,12 +128,50 @@ namespace Test.CompileBatchOfProjectsDelphi {
             var compressExecutable = Substitute.For<ICompressExecutable>();
 
             var fileDprProject = Path.GetFullPath("Resources\\Project3\\Project1.dpr");
+
             new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(fileDprProject)
-                                                           .BinPath("Resources\\Project3\\bin\\")
+                                                           .BinPath("bin")
                                                            .Build(compressExecutable);
 
             compressExecutable.Received(1)
-                              .Do(Path.GetDirectoryName(fileDprProject), fileExecutable);
+                              .Do(Path.GetFullPath( Path.GetDirectoryName(fileExecutable)), "Project1.exe");
+        }
+
+        [Test]
+        public void ShouldBuildExecutableFileWithVersionInFileName() {
+            const string fileExecutable = "Resources\\Project1\\Project1.exe";
+            const string executableWithVersion = "Resources\\Project1\\Project1 v1.2.3.4.exe";
+
+            if (File.Exists(fileExecutable))
+                File.Delete(fileExecutable);
+
+            if (File.Exists(executableWithVersion))
+                File.Delete(executableWithVersion);
+
+            new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(Path.GetFullPath("Resources\\Project1\\Project1.dpr"))
+                                                           .MakeCopyFileWithVersion()
+                                                           .Build();
+
+            Assert.That(File.Exists(executableWithVersion));
+        }
+
+        [Test]
+        public void ShouldBuildExecutableFileWithVersionInFileNameInBinPath() {
+            const string fileExecutable = "Resources\\bin\\Project1.exe";
+            const string executableWithVersion = "Resources\\bin\\Project1 v1.2.3.4.exe";
+
+            if (File.Exists(fileExecutable))
+                File.Delete(fileExecutable);
+
+            if (File.Exists(executableWithVersion))
+                File.Delete(executableWithVersion);
+
+            new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(Path.GetFullPath("Resources\\Project1\\Project1.dpr"))
+                                                           .MakeCopyFileWithVersion()
+                                                           .BinPath("..\\bin")
+                                                           .Build();
+
+            Assert.That(File.Exists(executableWithVersion));
         }
     }
 }

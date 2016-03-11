@@ -23,6 +23,7 @@ namespace CompileBatchOfProjectsDelphi {
                                                         .TempDirectory(tempFolder)
                                                         .SearchPath(seacrhPathFolder)
                                                         .BinPath(binPath)
+                                                        .MakeCopyFileWithVersion()
                                                         .Build(new UpxCompress());
                 } catch (Exception exception) {
                     Console.WriteLine("Error >>>>> " + exception.Message);

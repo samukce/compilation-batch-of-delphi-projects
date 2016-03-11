@@ -5,5 +5,6 @@
         ICompileDelphiProject SearchPath(string path);
         ICompileDelphiProject TempDirectory(string directory);
         ICompileDelphiProject BinPath(string path);
+        ICompileDelphiProject MakeCopyFileWithVersion();
     }
 }
