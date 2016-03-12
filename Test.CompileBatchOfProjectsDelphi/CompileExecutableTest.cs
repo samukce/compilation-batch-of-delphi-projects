@@ -120,6 +120,24 @@ namespace Test.CompileBatchOfProjectsDelphi {
 
         [Test]
         public void ShouldCallCompress() {
+            const string fileExecutable = "Resources\\Project1\\Project1.exe";
+
+            if (File.Exists(fileExecutable))
+                File.Delete(fileExecutable);
+
+            var compressExecutable = Substitute.For<ICompressExecutable>();
+
+            var fileDprProject = Path.GetFullPath("Resources\\Project1\\Project1.dpr");
+
+            new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile(fileDprProject)
+                                                           .Build(compressExecutable);
+
+            compressExecutable.Received(1)
+                              .Do(Path.GetFullPath( Path.GetDirectoryName(fileExecutable)), "Project1.exe");
+        }
+
+        [Test]
+        public void ShouldCallCompressWithBinPath() {
             const string fileExecutable = "Resources\\Project3\\bin\\Project1.exe";
 
             if (File.Exists(fileExecutable))
@@ -134,7 +152,7 @@ namespace Test.CompileBatchOfProjectsDelphi {
                                                            .Build(compressExecutable);
 
             compressExecutable.Received(1)
-                              .Do(Path.GetFullPath( Path.GetDirectoryName(fileExecutable)), "Project1.exe");
+                              .Do(Path.GetFullPath("Resources\\Project3\\bin"), "Project1.exe");
         }
 
         [Test]

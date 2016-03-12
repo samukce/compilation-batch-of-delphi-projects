@@ -5,9 +5,9 @@ namespace CompileBatchOfProjectsDelphi {
     class Program {
         static void Main(string[] args) {
             var delphiFile = args[0];
-            var tempFolder = args.Length > 0 ? args[1] : string.Empty;
-            var seacrhPathFolder = args.Length > 1 ? args[2] : string.Empty;
-            var binPath = args.Length > 2 ? args[3] : string.Empty;
+            var tempFolder = args.Length > 1 ? args[1] : string.Empty;
+            var seacrhPathFolder = args.Length > 2 ? args[2] : string.Empty;
+            var binPath = args.Length > 3 ? args[3] : null;
 
             CompileAllProjectFiles(delphiFile, tempFolder, seacrhPathFolder, binPath);
         }

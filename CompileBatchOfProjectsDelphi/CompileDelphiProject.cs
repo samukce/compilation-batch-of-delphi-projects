@@ -54,9 +54,9 @@ namespace CompileBatchOfProjectsDelphi {
             var fileNameProject = Path.GetFileName(fileDprProject);
             var workingDirectory = Path.GetDirectoryName(fileDprProject);
 
-            var addArgument = string.Empty;
+            var argumentOutPut = string.Empty;
             if (binPath != null)
-                addArgument = $"-E\"{binPath}\"";
+                argumentOutPut = $"-E\"{binPath}\"";
 
             if (binPath == null) {
                 binPath = workingDirectory;
@@ -69,7 +69,7 @@ namespace CompileBatchOfProjectsDelphi {
                 binPath = pathCombineBinAndWorkDirectory;
             }
 
-            var argumentsProcessCompile = $"\"{fileNameProject}\" -u\"{searchPath}\" -N\"{tempDirectory}\" -Q  {addArgument}";
+            var argumentsProcessCompile = $"\"{fileNameProject}\" -u\"{searchPath}\" -N\"{tempDirectory}\" -Q  {argumentOutPut}";
 
             processExecute.ExecuteProcess(delphiPath, argumentsProcessCompile, workingDirectory);
 
@@ -79,26 +79,25 @@ namespace CompileBatchOfProjectsDelphi {
         }
 
         private void CopyFileWithVersion(string pathExecutable, string fileNameProject) {
-            if (makeCopyFileWithVersion) {
-                var versionInfo = FileVersionInfo.GetVersionInfo(pathExecutable);
-                var newNameExecutable = string.Format("{0} v{1}.{2}.{3}.{4}.exe",
-                    Path.GetFileNameWithoutExtension(fileNameProject),
-                    versionInfo.FileMajorPart,
-                    versionInfo.FileMinorPart,
-                    versionInfo.FileBuildPart,
-                    versionInfo.FilePrivatePart);
+            if (!makeCopyFileWithVersion) return;
 
-                File.Copy(pathExecutable, Path.Combine(binPath, newNameExecutable), true);
-            }
+            var versionInfo = FileVersionInfo.GetVersionInfo(pathExecutable);
+            var newNameExecutable = string.Format("{0} v{1}.{2}.{3}.{4}.exe",
+                Path.GetFileNameWithoutExtension(fileNameProject),
+                versionInfo.FileMajorPart,
+                versionInfo.FileMinorPart,
+                versionInfo.FileBuildPart,
+                versionInfo.FilePrivatePart);
+
+            File.Copy(pathExecutable, Path.Combine(binPath, newNameExecutable), true);
         }
 
-        private string CompressExecutable(ICompressExecutable compressExecutable, string fileNameProject, string workingDirectory) {
+        private string CompressExecutable(ICompressExecutable compressExecutable, string fileNameProject, string directoryOutput) {
             var executeName = Path.ChangeExtension(fileNameProject, "exe");
 
-            var pathExecutable = Path.Combine(binPath, executeName);
+            compressExecutable?.Do(directoryOutput, executeName);
 
-            compressExecutable?.Do(workingDirectory, executeName);
-            return pathExecutable;
+            return Path.Combine(directoryOutput, executeName);
         }
     }
 }
