@@ -10,8 +10,22 @@ namespace Test.CompileBatchOfProjectsDelphi {
 
         [Test]
         [ExpectedException(typeof(FileNotFoundException))]
-        public void ThrowFileNotFouldWhenProjectFileNotExist() {
+        public void ThrowFileNotFoundWhenProjectFileNotExist() {
             new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile("Resources\\Project1\\Project_NOT_EXIST.dpr");
+        }
+
+        [Test]
+        [ExpectedException(typeof(CompileErrorExcpetion))]
+        public void ThrowCompileErrorExcpetionWhenBrokeBuild() {
+            const string fileExecutable = "Resources\\Project4\\Project1.exe";
+
+            if (File.Exists(fileExecutable))
+                File.Delete(fileExecutable);
+
+            new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile("Resources\\Project4\\Project1.dpr")
+                                                           .Build();
+
+            Assert.That(File.Exists(fileExecutable), Is.False);
         }
 
         [Test]

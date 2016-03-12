@@ -28,6 +28,10 @@ namespace CompileBatchOfProjectsDelphi {
             process.BeginErrorReadLine();
 
             process.WaitForExit();
+
+            if (process.ExitCode == 0) return;
+
+            throw new ProcessErrorExecuteException(fileExecute, argumentsProcessCompile);
         }
 
         private void ProcessConsoleLog(object sender, DataReceivedEventArgs e) {

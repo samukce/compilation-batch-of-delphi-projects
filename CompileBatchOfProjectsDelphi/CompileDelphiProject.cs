@@ -71,7 +71,12 @@ namespace CompileBatchOfProjectsDelphi {
 
             var argumentsProcessCompile = $"\"{fileNameProject}\" -u\"{searchPath}\" -N\"{tempDirectory}\" -Q  {argumentOutPut}";
 
-            processExecute.ExecuteProcess(delphiPath, argumentsProcessCompile, workingDirectory);
+            try {
+                processExecute.ExecuteProcess(delphiPath, argumentsProcessCompile, workingDirectory);
+            } catch (ProcessErrorExecuteException) {
+
+                throw new CompileErrorExcpetion();
+            }
 
             var pathExecutable = CompressExecutable(compressExecutable, fileNameProject, binPath);
 

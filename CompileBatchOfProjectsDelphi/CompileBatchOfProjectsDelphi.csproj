@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompileDelphiProject.cs" />
+    <Compile Include="CompileErrorExcpetion.cs" />
     <Compile Include="ICompileDelphiProject.cs" />
     <Compile Include="ICompressExecutable.cs" />
+    <Compile Include="ProcessErrorExecuteException.cs" />
     <Compile Include="ProcessExecute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
