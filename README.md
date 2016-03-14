@@ -14,6 +14,7 @@ Utility to compile Delphi 7 projects in batch.
 ## Requirements to use
 
 - .NET Framework 4.6
+- Delphi 7
 
 ## License
 
