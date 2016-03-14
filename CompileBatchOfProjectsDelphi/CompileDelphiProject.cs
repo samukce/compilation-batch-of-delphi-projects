@@ -73,9 +73,8 @@ namespace CompileBatchOfProjectsDelphi {
 
             try {
                 processExecute.ExecuteProcess(delphiPath, argumentsProcessCompile, workingDirectory);
-            } catch (ProcessErrorExecuteException) {
-
-                throw new CompileErrorExcpetion();
+            } catch (ProcessErrorExecuteException pee) {
+                throw new CompileErrorExcpetion(pee);
             }
 
             var pathExecutable = CompressExecutable(compressExecutable, fileNameProject, binPath);

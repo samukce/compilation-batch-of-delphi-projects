@@ -10,7 +10,7 @@ namespace Test.CompileBatchOfProjectsDelphi {
 
         [Test]
         [ExpectedException(typeof(FileNotFoundException))]
-        public void ThrowFileNotFoundWhenProjectFileNotExist() {
+        public void ThrowFileNotFoundWhenProjectFileNotToExist() {
             new CompileDelphiProject(AppSettings["DELPHI"]).ProjectFile("Resources\\Project1\\Project_NOT_EXIST.dpr");
         }
 
@@ -147,7 +147,7 @@ namespace Test.CompileBatchOfProjectsDelphi {
                                                            .Build(compressExecutable);
 
             compressExecutable.Received(1)
-                              .Do(Path.GetFullPath( Path.GetDirectoryName(fileExecutable)), "Project1.exe");
+                              .Do(Path.GetFullPath(Path.GetDirectoryName(fileExecutable)), "Project1.exe");
         }
 
         [Test]
