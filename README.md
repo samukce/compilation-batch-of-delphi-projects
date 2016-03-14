@@ -10,7 +10,9 @@ Utility to compile Delphi 7 projects in batch.
    - CompileBatchOfProjectsDelphi.exe %DELPHI% "c:\temp" "C:\Library;" "c:\executablefolder"
    - Example: DELPHI="C:\Program Files (x86)\Borland\Delphi7\Bin\dcc32.exe"
 
+## Download
 
+See the list of [available releases](https://github.com/samukce/compilation-batch-of-delphi-projects/releases).
   
 ## Requirements to use
 
