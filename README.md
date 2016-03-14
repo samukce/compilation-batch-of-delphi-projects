@@ -1,6 +1,6 @@
 # Compilation Batch of Delphi projects
 
-Utility to compile Delphi 7 projects in batch.
+A utility to compile Delphi 7 projects in batch.
 
 ## Call by command line on Jenkins
 
