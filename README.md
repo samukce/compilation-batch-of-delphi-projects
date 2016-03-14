@@ -8,6 +8,7 @@ Utility to compile Delphi 7 projects in batch.
  - Add CompileBatchOfProjectsDelphi.exe to path of Windows;
  - In folder where have *.dpr files, execute the command: 
    - CompileBatchOfProjectsDelphi.exe %DELPHI% "c:\temp" "C:\Library;" "c:\executablefolder"
+   - Example: DELPHI="C:\Program Files (x86)\Borland\Delphi7\Bin\dcc32.exe"
 
 
   
