@@ -4,7 +4,12 @@ Utility to compile Delphi 7 projects in batch.
 
 ## Call by command line on Jenkins
 
- - CompileBatchOfProjectsDelphi.exe %DELPHI% "c:\temp" "C:\Library;" "c:\executablefolder"
+
+ - Add CompileBatchOfProjectsDelphi.exe to path of Windows;
+ - In folder where have *.dpr files, execute the command: 
+   - CompileBatchOfProjectsDelphi.exe %DELPHI% "c:\temp" "C:\Library;" "c:\executablefolder"
+
+
   
 ## Requirements to use
 
