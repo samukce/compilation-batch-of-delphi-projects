@@ -1,4 +1,4 @@
-# compilation-batch-of-delphi-projects
+# Compilation Batch of Delphi projects
 
 ## Call by command line on Jenkins
 
