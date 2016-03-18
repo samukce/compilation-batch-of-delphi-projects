@@ -3,8 +3,6 @@ using System.Diagnostics;
 
 namespace CompileBatchOfProjectsDelphi {
     public class ProcessExecute {
-        public ProcessExecute() {
-        }
 
         public void ExecuteProcess(string fileExecute, string argumentsProcessCompile, string workingDirectory) {
             var process = new Process {
@@ -21,7 +19,7 @@ namespace CompileBatchOfProjectsDelphi {
             };
 
             process.OutputDataReceived += ProcessConsoleLog;
-            process.ErrorDataReceived += ProcessConsoleLog;
+            process.ErrorDataReceived += ErrorProcessConsoleLog;
 
             process.Start();
             process.BeginOutputReadLine();
@@ -36,6 +34,10 @@ namespace CompileBatchOfProjectsDelphi {
 
         private void ProcessConsoleLog(object sender, DataReceivedEventArgs e) {
             Console.WriteLine(e.Data);
+        }
+
+        private void ErrorProcessConsoleLog(object sender, DataReceivedEventArgs e) {
+            Console.WriteLine(">>>>> Error in process :" + e.Data);
         }
     }
 }
